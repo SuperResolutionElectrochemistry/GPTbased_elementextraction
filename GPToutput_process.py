@@ -16,18 +16,3 @@ df = pd.DataFrame(elements_count.items(), columns=['元素', '出现次数'])
 df.to_csv('./高熵合金元素组分统计-catrefine.csv', index=False, encoding='utf-8-sig')
 
 
-
-                # GPToutput.split('\n')
-                # for i in range(len(GPToutput.split('\n'))):
-                #     if GPToutput.split('\n')[i] == 'Article research on High entropy materials or not:':
-                #         ArticleResearch = GPToutput.split('\n')[i+1]
-                #         if GPToutput.split('\n')[i+1] == 'Article Type: Research or Review':
-                #             ArticleType = GPToutput.split('\n')[i+1]
-                #             if GPToutput.split('\n')[i+2] == 'Elements:':
-                #                 high_entropy_elements = GPToutput.split('\n')[i+1:]
-
-                # ArticleResearchlist = ArticleResearchlist.append(ArticleResearch)
-                # ArticleTypelist = ArticleTypelist.append(ArticleType)
-                # high_entropy_elements_list.append(high_entropy_elements)
-                # abstract_processedlist = abstract_processedlist.append(abstract)
-                # title_processedlist = title_processedlist.append(title_list[row])

@@ -1,1 +1,1 @@
-#Please enter you GPT-API key here.
+# You could set up you API Key here

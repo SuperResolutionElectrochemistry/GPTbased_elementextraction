@@ -29,7 +29,7 @@ def api_exchange():
     return api_key
 
 
-# 函数来提取文献摘要中的高熵合金元素组分
+# main function to extract high entropy elements from abstracts
 def Abstract_promote(abstract,a):
     
     openai.api_key = api_exchange()
@@ -55,7 +55,7 @@ def Abstract_promote(abstract,a):
                 )
         return response['choices'][0]['message']['content'].strip()
     except :
-        return "API请求超时"
+        return "API time out"
 
 
 for file in os.listdir('./TEST'):
@@ -65,8 +65,7 @@ for file in os.listdir('./TEST'):
         
         reader = pd.read_excel(file, sheet_name=0, header=0, index_col=0)
         
-        # for row in range(len(reader['Abstract'])):
-        #     abstract_list = reader['Abstract']  # 假设文献摘要在CSV的第一列
+ 
         for row in range(len(reader['Abstract'])):
             title_list = reader['Article Title']
             abstract_list = reader['Abstract']  
@@ -77,34 +76,27 @@ for file in os.listdir('./TEST'):
                 a += 1
                 if a == 4:
                     a = 1
-                #当extract_high_entropy_elements(abstract)超时时，会返回"API请求超时"，这里判断一下，如果返回的是"API请求超时"，则等待20秒后再次请求
-                while GPToutput == "API请求超时":
+                
+                while GPToutput == "API time out":
                     time.sleep(20)
                     GPToutput = Abstract_promote(abstract,a)
-                    print(f"API请求超时，等待20秒后再次请求")
+                    print(f"API time out，waiting for 20 seconds to request again")
 
                 GPToutputlist.append(GPToutput)
                 abstract_processedlist.append(abstract)
                 title_processedlist.append(title_list[row])
                 
-                print(f"标题：{title_list[row]}")
+                print(f"Title：{title_list[row]}")
                 print(f"GPToutput：{GPToutput}")
-                print(f"已提取{counts}条文献摘要")
+                print(f"Already finish {counts} articles")
                 print("-" * 50)
                 time.sleep(0)
                 if counts % 400 == 0:
                     temp = './temp/' + str(counts) + '.csv'
-                    #     df = pd.DataFrame(high_entropy_elements_list, columns=['高熵合金元素组分'])
-                    #     df.to_csv(temp, index=False, encoding='utf-8-sig')
                     df = pd.DataFrame(list(map(list, zip(*[GPToutputlist,title_processedlist,abstract_processedlist]))), columns=['output','title','abstract'])
-                    df.to_csv(temp, index=False, encoding='utf-8-sig')
+                    df.to_csv(temp, index=False, encoding='utf-8-sig')            
 
 
-        
-
-            
-
-# 将提取的高熵合金元素组分写入CSV文件
 df = pd.DataFrame(list(map(list, zip(*[GPToutputlist,title_processedlist,abstract_processedlist]))), columns=['output','title','abstract'])
-df.to_csv('./高熵合金元素组分处理结果-catrefine.csv', index=False, encoding='utf-8-sig')
+df.to_csv('./paradigm of Extraction.csv', index=False, encoding='utf-8-sig')
 
